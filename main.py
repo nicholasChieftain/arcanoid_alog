@@ -53,7 +53,11 @@ platform_x = 200
 platform_y = 330
 
 platform = Picture('platform.png', platform_x,platform_y,100,30)
+ball = Picture('ball.png', 160,200,50,50)
 
+
+dx = 3
+dy = 3
 
 move_right = False
 move_left = False
@@ -81,12 +85,29 @@ while True:
 
     platform.rect.x = platform_x
 
+    ball.rect.x += dx
+    ball.rect.y += dy
+
+    if ball.colliderect(platform.rect):
+        dy *= -1
+
+    if ball.rect.y < 0:
+        dy *= -1
+
+    if ball.rect.x > 450 or ball.rect.x < 0:
+        dx *= -1
+
     mw.fill((back))
+
     for enemy in l_enemy:
         enemy.draw()
-    platform.draw()
+        if enemy.colliderect(ball.rect):
+            l_enemy.remove(enemy)
 
+
+    platform.draw()
+    ball.draw()
 
 
     pygame.display.update()
-    clock.tick(240)
+    clock.tick(30)
